@@ -1,0 +1,279 @@
+% =====================================================================
+%  3F3 Module Experiment: Random Variables and Random Number Generation
+%  Lab report template
+% ---------------------------------------------------------------------
+%  How to use it:
+%  * Fill in your details below.
+%  * Replace each blue \answer{...} placeholder with your answer. The
+%    grey \task{...} text summarises what each part asks for; change
+%    \showpromptstrue to \showpromptsfalse to hide all of it.
+%  * Figures: save each plot in the figures/ folder under the name shown
+%    in its placeholder box (names are case sensitive), e.g.
+%        plt.savefig("figures/q1-histograms.pdf", bbox_inches="tight")
+%    It then appears automatically (.pdf, .png or .jpg). On Overleaf,
+%    select the figures folder before clicking Upload.
+%  * Code: paste into the lstlisting blocks, or include a file with
+%        \lstinputlisting{q1.py}
+%  * Overleaf: New Project > Upload Project, then choose the .zip file.
+% =====================================================================
+\documentclass[11pt,a4paper]{article}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage{parskip}
+\usepackage[section]{placeins}   % keeps figures within their question
+
+% ---- Your details ---------------------------------------------------
+\newcommand{\studentname}{\answer{Your name}}
+\newcommand{\crsid}{\answer{CRSID}}
+\newcommand{\college}{\answer{College}}
+\newcommand{\labdate}{\answer{Date of lab session}}
+
+\newif\ifshowprompts
+\showpromptstrue   % \showpromptsfalse hides the grey task prompts
+
+% ---- Template helpers (no need to edit) -----------------------------
+\definecolor{answerblue}{rgb}{0.1,0.25,0.7}
+\definecolor{taskgrey}{gray}{0.4}
+
+% \task{...}: what the handout asks for in this part
+\NewDocumentCommand{\task}{+m}{%
+  \ifshowprompts{\small\itshape\leavevmode\color{taskgrey}#1\par}\fi}
+
+% \answer{...}: placeholder, to be replaced by your answer
+\NewDocumentCommand{\answer}{+m}{\leavevmode{\color{answerblue}[#1]}}
+
+% \answerfig[options]{name}{caption}: shows figures/name.pdf (or .png,
+% .jpg, .jpeg) if it exists, otherwise a placeholder box. Options are
+% passed to \includegraphics. Refer to it as Figure~\ref{fig:name}.
+\NewDocumentCommand{\answerfig}{O{width=0.7\textwidth} m m}{%
+  \begin{figure}[htbp]
+    \centering
+    \IfFileExists{figures/#2.pdf}{\includegraphics[#1]{figures/#2.pdf}}{%
+    \IfFileExists{figures/#2.png}{\includegraphics[#1]{figures/#2.png}}{%
+    \IfFileExists{figures/#2.jpg}{\includegraphics[#1]{figures/#2.jpg}}{%
+    \IfFileExists{figures/#2.jpeg}{\includegraphics[#1]{figures/#2.jpeg}}{%
+      \fbox{\parbox[c][0.22\textwidth][c]{0.7\textwidth}{\centering
+        \color{answerblue}Put your plot in the \texttt{figures} folder as\\
+        \texttt{\detokenize{#2}.pdf} or \texttt{\detokenize{#2}.png}}}}}}}%
+    \caption{#3}\label{fig:#2}%
+  \end{figure}}
+
+% Unicode symbols typed straight into the text
+\DeclareUnicodeCharacter{03BC}{\ensuremath{\mu}}
+\DeclareUnicodeCharacter{03C3}{\ensuremath{\sigma}}
+\DeclareUnicodeCharacter{2212}{\ensuremath{-}}
+\DeclareUnicodeCharacter{2248}{\ensuremath{\approx}}
+\DeclareUnicodeCharacter{2264}{\ensuremath{\leq}}
+\DeclareUnicodeCharacter{2265}{\ensuremath{\geq}}
+
+\lstset{
+  language=Python,
+  basicstyle=\small\ttfamily,
+  keywordstyle=\color{blue!60!black},
+  commentstyle=\color{green!40!black},
+  stringstyle=\color{orange!60!black},
+  showstringspaces=false,
+  frame=single,
+  framerule=0.3pt,
+  breaklines=true,
+  columns=fullflexible,
+  keepspaces=true,
+  upquote=true,
+  tabsize=4,
+  % non-ASCII characters in pasted code
+  literate={μ}{{$\mu$}}1 {σ}{{$\sigma$}}1 {π}{{$\pi$}}1 {²}{{$^2$}}1
+           {×}{{$\times$}}1 {≈}{{$\approx$}}1 {≤}{{$\leq$}}1 {≥}{{$\geq$}}1
+           {−}{{-}}1 {–}{{-}}1 {—}{{--}}1
+           {‘}{{\textquotesingle}}1 {’}{{\textquotesingle}}1
+           {“}{{"}}1 {”}{{"}}1,
+}
+
+\begin{document}
+
+\begin{center}
+  \textbf{Engineering Tripos Part IIA \qquad Module Experiment 3F3}\\[1.5ex]
+  {\Large\bfseries Random Variables and Random Number Generation}\\[1ex]
+  {\large Lab Report}\\[3ex]
+  \begin{tabular}{@{}ll@{}}
+    Name:        & \studentname \\
+    CRSID:       & \crsid \\
+    College:     & \college \\
+    Lab session: & \labdate \\
+  \end{tabular}
+\end{center}
+\medskip
+\hrule
+
+% =====================================================================
+\section{Uniform random variables}
+% =====================================================================
+
+\subsection*{Five numbers from seed 1234}
+
+\task{Initialise an \texttt{LCG} random number generator with seed $1234$
+and print five uniform random numbers. What numbers do you get?}
+
+\begin{lstlisting}
+# Your code for this part (include the full LCG class once, in Section 4)
+\end{lstlisting}
+
+\answer{0.7143076679203659
+  0.20701311994343996
+  0.7495418272446841
+  0.3460624306462705
+  0.8034394562710077. The numbers perhaps don't seem particularly random. Alternate numbers are increasing from 0.71 by about 0.05 at a time, while the other pattern is increasing from 0.2. This is because of the relative size of the seed to the size of the modulo.}
+
+\subsection*{Histograms}
+
+\task{Generate $1{,}000$ uniform random variables and plot a histogram, then
+do the same for $100{,}000$. Provide detailed comments on what you observe.}
+
+\begin{lstlisting}
+# Your code for this part
+\end{lstlisting}
+
+\answerfig[width=\textwidth]{q1-histograms}{Histograms of $1{,}000$ and
+$100{,}000$ uniform random numbers generated by the LCG.}
+
+\answer{Your detailed comments on Figure~\ref{fig:q1-histograms}.}
+
+\subsection*{Mean, variance and covariance}
+
+\task{Calculate the mean and variance of the $100{,}000$ numbers and compare
+them with the theoretical values for $\mathcal{U}(0,1)$. Compute the
+covariance between $X_{t+1}$ and $X_t$. Why does this provide evidence that
+the numbers are behaving like uniform random numbers?}
+
+\answer{Derivation of the theoretical mean and variance.}
+
+\begin{lstlisting}
+# Your code for this part
+\end{lstlisting}
+
+\begin{center}
+  \begin{tabular}{lcc}
+    \hline
+             & LCG, $100{,}000$ samples & Theory, $\mathcal{U}(0,1)$ \\
+    \hline
+    Mean     & \answer{value} & \answer{value} \\
+    Variance & \answer{value} & \answer{value} \\
+    \hline
+  \end{tabular}
+\end{center}
+
+Covariance between $X_{t+1}$ and $X_t$: \answer{value}
+
+\answer{Your comparison with theory, and your answer to the question.}
+
+% =====================================================================
+\section{Functions of random variables}
+% =====================================================================
+
+\subsection*{\boldmath $y = x^2$}
+
+\task{For $x \sim \mathcal{U}(0,1)$ and $y = g(x) = x^2$, calculate $p_Y(y)$
+using the Jacobian formula. Verify it by transforming a large collection of
+samples $x^{(i)}$ to give $y^{(i)} = g(x^{(i)})$, histogramming the $y$
+samples and overlaying your formula.}
+
+\answer{Your derivation of $p_Y(y)$.}
+
+\begin{lstlisting}
+# Your code for this part
+\end{lstlisting}
+
+\answerfig{q2-square}{Histogram of $y = x^2$ for transformed uniform samples,
+with the density from the Jacobian formula overlaid.}
+
+\answer{Your comments.}
+
+\subsection*{\boldmath $y = \ln(x) - \ln(1-x)$}
+
+\task{Calculate $p_Y(y)$ for $y = g(x) = \ln(x) - \ln(1-x)$ using the
+Jacobian formula, and again verify your result by histogramming transformed
+samples.}
+
+\answer{Your derivation of $p_Y(y)$.}
+
+\begin{lstlisting}
+# Your code for this part
+\end{lstlisting}
+
+\answerfig{q2-log}{Histogram of $y = \ln(x) - \ln(1-x)$ for transformed
+uniform samples, with the density from the Jacobian formula overlaid.}
+
+\answer{Your comments.}
+
+% =====================================================================
+\section{Non-uniform random number generation}
+% =====================================================================
+
+\subsection*{Why the inverse CDF method works}
+
+\task{To generate random variables with CDF $F(y)$, we generate
+$x \sim \mathcal{U}(0,1)$ and set $y = F^{-1}(x)$. Why does this work?}
+
+\answer{Your explanation.}
+
+\subsection*{CDF and inverse CDF of the exponential distribution}
+
+\task{For the exponential distribution with mean one,
+$p_Y(y) = \exp(-y)$, $y \geq 0$, calculate the CDF and the inverse CDF.}
+
+\answer{Your derivation.}
+
+\subsection*{Sampling from the exponential distribution}
+
+\task{Use the inverse CDF method to generate samples from the exponential
+distribution. Plot histograms or kernel density estimates and overlay them on
+the exponential density, and comment on the results.}
+
+\begin{lstlisting}
+# Your code for this part
+\end{lstlisting}
+
+\answerfig{q3-exponential}{Samples generated by the inverse CDF method,
+compared with the exponential density $p_Y(y) = \exp(-y)$.}
+
+\answer{Your comments.}
+
+% =====================================================================
+\section{Simulating a stochastic process}
+% =====================================================================
+
+\subsection*{Bernoulli and binomial random variables}
+
+\task{Complete the \texttt{bernoulli} method of the \texttt{LCG} class to
+generate Bernoulli random variables with parameter $p$, and add a method that
+generates binomial random variables.}
+
+\answer{A brief explanation of how your methods work.}
+
+\begin{lstlisting}
+# Your completed LCG class, including the bernoulli and binomial methods
+\end{lstlisting}
+
+\subsection*{Neutral selection}
+
+\task{Write Python code to simulate
+$N_A(t+1) \sim \mathrm{Binomial}\big(N, N_A(t)/N\big)$,
+$N_B(t+1) = N - N_A(t+1)$. Run simulations with $N = 200$ and
+$N_A(0) = 100$ until $t = 500$, plot $N_A(t)$ and $N_B(t)$ over time, and
+repeat this several times.}
+
+\begin{lstlisting}
+# Your code for this part
+\end{lstlisting}
+
+\answerfig[width=\textwidth]{q4-neutral-selection}{$N_A(t)$ and $N_B(t)$ for
+several runs of the neutral selection simulation, with $N = 200$ and
+$N_A(0) = 100$.}
+
+\answer{Your comments on what you observe.}
+
+\end{document}
