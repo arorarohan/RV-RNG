@@ -209,7 +209,34 @@ using the Jacobian formula. Verify it by transforming a large collection of
 samples $x^{(i)}$ to give $y^{(i)} = g(x^{(i)})$, histogramming the $y$
 samples and overlaying your formula.}
 
-\answer{Your derivation of $p_Y(y)$.}
+\answer{
+The pdf of $x \sim \mathcal{U}(0,1)$ is
+\[
+p_X(x) = \begin{cases} 1 & 0 < x < 1 \\ 0 & \text{otherwise,} \end{cases}
+\]
+so the support of $x$ is $(0,1)$. Differentiating $g(x) = x^2$ gives
+\[
+\frac{dg}{dx} = 2x, \qquad \left|\frac{dg}{dx}\right| = 2|x| ,
+\]
+which is nonzero everywhere on the support of $x$.
+
+For a given $y > 0$, the equation $y = x^2$ has two inverses,
+\[
+x_1(y) = \sqrt{y}, \qquad x_2(y) = -\sqrt{y}.
+\]
+Hence, by the Jacobian formula, $p_Y(y)$ is a sum over both inverses,
+\[
+p_Y(y) = \sum_{k=1}^{2} \frac{p_X\!\left(x_k(y)\right)}{\left|\frac{dg}{dx}\right|_{x=x_k(y)}}
+= \frac{p_X(\sqrt{y})}{2\sqrt{y}} + \frac{p_X(-\sqrt{y})}{2\sqrt{y}} ,
+\]
+since $|2x_k| = 2\sqrt{y}$ for both $k$.
+
+Now evaluate $p_X$ at each inverse. For $x_1 = \sqrt{y}$, $p_X(\sqrt{y}) = 1$ when $0 < \sqrt{y} < 1$, i.e.\ $0 < y < 1$, and $0$ otherwise. For $x_2 = -\sqrt{y}$, we have $-\sqrt{y} < 0$ for all $y > 0$, which lies outside the support of $x$, so $p_X(-\sqrt{y}) = 0$. Only the $k=1$ term contributes, giving
+\[
+p_Y(y) = \begin{cases} \dfrac{1}{2\sqrt{y}} & 0 < y < 1 \\[1ex] 0 & \text{otherwise.} \end{cases}
+\]
+The support of $y$ is therefore $(0,1)$, the image of $(0,1)$ under $g$. As a check, $\int_0^1 \frac{1}{2\sqrt{y}}\,dy = \left[\sqrt{y}\right]_0^1 = 1$, so $p_Y$ is correctly normalised.
+}
 
 \begin{lstlisting}
 # Your code for this part
