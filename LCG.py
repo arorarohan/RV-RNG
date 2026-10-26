@@ -45,3 +45,23 @@ if __name__ == "__main__":
     X_t1 = X2[1:] #starts offset by one
     covariance = np.cov(X_t, X_t1)[0,1] #covariance matrix, this index gives the Cov.
     print(f"X2 covariance = {covariance}")
+    
+    
+    # Q2: y = g(x) = x^2, with x ~ U(0,1)
+    # transform the LCG samples
+    X2 = np.array([generator.uniform() for _ in range(100000)])
+    Y2 = X2 ** 2
+
+    y_grid = np.linspace(0.001, 1, 1000)
+    p_Y = 1 / (2 * np.sqrt(y_grid)) #per derivation
+
+    # build the chart
+    fig, ax = plt.subplots()
+    ax.hist(Y2, bins=np.linspace(0, 1, 50), density=True, label="Histogram of $y=x^2$ samples")
+    ax.plot(y_grid, p_Y, 'r', label=r"$p_Y(y)=\frac{1}{2\sqrt{y}}$")
+    ax.set_xlabel("y")
+    ax.set_ylabel("$p_Y(y)$")
+    ax.set_ylim(0, 5)  # p_Y diverges at y=0
+    ax.legend()
+    fig.savefig("figures/q2-square.pdf")
+    plt.show()
