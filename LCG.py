@@ -116,3 +116,32 @@ if __name__ == "__main__":
     ax.legend()
     fig.savefig("figures/q3-exponential.pdf")
     plt.show()
+
+
+    # Q4: neutral selection, N_A(t+1) ~ Binomial(N, N_A(t)/N), N_B(t+1) = N - N_A(t+1)
+
+    N = 200
+    N_A0 = 100
+    T = 500
+    seeds = [14, 5, 7, 4, 8, 15] # seeds chosen to show the different outcomes
+
+    fig, axes = plt.subplots(2, 3, figsize=(12, 6), sharex=True, sharey=True)
+    for ax, seed in zip(axes.flat, seeds):
+        gen = LCG(seed)
+        N_A = np.zeros(T + 1, dtype=int)
+        N_A[0] = N_A0
+        for t in range(T):
+            N_A[t + 1] = gen.binomial(N, N_A[t] / N)
+        N_B = N - N_A
+
+        ax.plot(N_A, label="$N_A(t)$")
+        ax.plot(N_B, label="$N_B(t)$")
+        ax.set_title(f"Run (seed {seed})")
+    for ax in axes[1]:
+        ax.set_xlabel("t")
+    for ax in axes[:, 0]:
+        ax.set_ylabel("population size")
+    axes[0, 0].legend()
+    fig.tight_layout()
+    fig.savefig("figures/q4-neutral-selection.pdf")
+    plt.show()
