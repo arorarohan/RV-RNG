@@ -88,11 +88,12 @@ if __name__ == "__main__":
 
 
     # Q3: exponential distribution via the inverse CDF, F^-1(x) = -ln(1-x)
-    # reuse the uniform LCG samples as probability levels
+
+    X4 = np.array([generator.uniform() for _ in range(100000)])
     Y4 = -np.log(1 - X2)
 
     y_grid = np.linspace(0, 8, 1000)
-    p_Y = np.exp(-y_grid) #exponential pdf with mean one
+    p_Y = np.exp(-y_grid) #exponential pdf with mean 1
 
     # build the chart
     fig, ax = plt.subplots()
