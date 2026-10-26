@@ -393,10 +393,38 @@ compared with the exponential density $p_Y(y) = \exp(-y)$.}
 generate Bernoulli random variables with parameter $p$, and add a method that
 generates binomial random variables.}
 
-\answer{A brief explanation of how your methods work.}
+\answer{See the code comments for explanation.}
 
 \begin{lstlisting}
-# Your completed LCG class, including the bernoulli and binomial methods
+import numpy as np
+import matplotlib.pyplot as plt
+
+class LCG(object):
+    def __init__(self, seed):
+        self.X = int(seed)
+
+    def generate(self):
+        self.X = (1664525 * self.X + 1013904223) % 4294967296
+        return self.X
+    
+    def uniform(self):
+        return self.generate() / 4294967296
+    
+    def bernoulli(self, p):
+        # Draw from a uniform (0,1) RV. Return 1 is the result is below p or 0 if the result is above p.
+        # Because we are drawing from a uniform distribution, the probability that the result is less than p is p.
+        # And therefore the probability of drawing above p is 1-p. So this acts just like a bernoulli RV.
+        draw = self.uniform()
+
+        if draw < p:
+            return 1
+        
+        return 0
+
+    def binomial(self, n, p):
+        # Generate n independent bernoulli trials and sum them together
+        trials = [self.bernoulli(p) for _ in range(n)]
+        return sum(trials)
 \end{lstlisting}
 
 \subsection*{Neutral selection}
