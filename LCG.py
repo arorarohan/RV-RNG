@@ -13,8 +13,20 @@ class LCG(object):
         return self.generate() / 4294967296
     
     def bernoulli(self, p):
-        # to be completed
-        pass
+        # Draw from a uniform (0,1) RV. Return 1 is the result is below p or 0 if the result is above p.
+        # Because we are drawing from a uniform distribution, the probability that the result is less than p is p.
+        # And therefore the probability of drawing above p is 1-p. So this acts just like a bernoulli RV.
+        draw = self.uniform()
+
+        if draw < p:
+            return 1
+        
+        return 0
+
+    def binomial(self, n, p):
+        # Generate n independent bernoulli trials and sum them together
+        trials = [self.bernoulli(p) for _ in range(n)]
+        return sum(trials)
 
 
 if __name__ == "__main__":
