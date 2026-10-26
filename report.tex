@@ -28,10 +28,10 @@
 \usepackage[section]{placeins}   % keeps figures within their question
 
 % ---- Your details ---------------------------------------------------
-\newcommand{\studentname}{\answer{Your name}}
-\newcommand{\crsid}{\answer{CRSID}}
-\newcommand{\college}{\answer{College}}
-\newcommand{\labdate}{\answer{Date of lab session}}
+\newcommand{\studentname}{\answer{Rohan Arora}}
+\newcommand{\crsid}{\answer{ra719}}
+\newcommand{\college}{\answer{Wolfson}}
+\newcommand{\labdate}{\answer{26/10/2026}}
 
 \newif\ifshowprompts
 \showpromptstrue   % \showpromptsfalse hides the grey task prompts
@@ -196,7 +196,7 @@ print(f"X2 covariance = {covariance}")
 
 Covariance between $X_{t+1}$ and $X_t$: \answer{0.0001}
 
-\answer{The mean and variance are very close to the theoretical values for the uniform distribution. These are evidence that the numbers follow a uniform distribution but they do not prove it. The extremely low covariance is stronger evidence. A uniform distribution is memoryless, and the low covariance shows that the next observation is independent of previous observations, satisfying the memoryless property.}
+\answer{The mean and variance are very close to the theoretical values for the uniform distribution. These are evidence that the numbers follow a uniform distribution but they do not prove it. The extremely low covariance is also evidence. A uniform distribution is memoryless, and the low covariance shows that the next observation is independent of previous observations, satisfying the memoryless property.}
 
 % =====================================================================
 \section{Functions of random variables}
@@ -436,13 +436,37 @@ $N_A(0) = 100$ until $t = 500$, plot $N_A(t)$ and $N_B(t)$ over time, and
 repeat this several times.}
 
 \begin{lstlisting}
-# Your code for this part
+    N = 200
+    N_A0 = 100
+    T = 500
+    seeds = [14, 5, 7, 4, 8, 15] # seeds chosen to show the different outcomes
+
+    fig, axes = plt.subplots(2, 3, figsize=(12, 6), sharex=True, sharey=True)
+    for ax, seed in zip(axes.flat, seeds):
+        gen = LCG(seed)
+        N_A = np.zeros(T + 1, dtype=int)
+        N_A[0] = N_A0
+        for t in range(T):
+            N_A[t + 1] = gen.binomial(N, N_A[t] / N)
+        N_B = N - N_A
+
+        ax.plot(N_A, label="$N_A(t)$")
+        ax.plot(N_B, label="$N_B(t)$")
+        ax.set_title(f"Run (seed {seed})")
+    for ax in axes[1]:
+        ax.set_xlabel("t")
+    for ax in axes[:, 0]:
+        ax.set_ylabel("population size")
+    axes[0, 0].legend()
+    fig.tight_layout()
+    fig.savefig("figures/q4-neutral-selection.pdf")
+    plt.show()
 \end{lstlisting}
 
 \answerfig[width=\textwidth]{q4-neutral-selection}{$N_A(t)$ and $N_B(t)$ for
 several runs of the neutral selection simulation, with $N = 200$ and
 $N_A(0) = 100$.}
 
-\answer{Your comments on what you observe.}
+\answer{We observe that as the proportion of one gene increases due to randomness, the probability of that gene being reproduced the next generation increases, so the proportion grows further. However, while the probability of the other gene being reproduced in larger quantity is not zero, the trend can reverse and oscillate as seen with seeds 8 and 15 where the end result is yet to be determined after 500 generations. The process only ends when the population of one gene reaches 200, at which point the probability of the other gene being reproduced is zero and the process becomes deterministic.}
 
 \end{document}
