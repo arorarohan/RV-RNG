@@ -270,7 +270,7 @@ Jacobian formula, and again verify your result by histogramming transformed
 samples.}
 
 \answer{
-The pdf of $x \sim \mathcal{U}(0,1)$ is
+As before, the pdf of $x \sim \mathcal{U}(0,1)$ is
 \[
 p_X(x) = \begin{cases} 1 & 0 < x < 1 \\ 0 & \text{otherwise,} \end{cases}
 \]
@@ -280,31 +280,46 @@ so the support of $x$ is $(0,1)$. Differentiating $g(x) = \ln(x) - \ln(1-x)$ giv
 \]
 which is positive and finite everywhere on the support of $x$. Hence $g$ is strictly increasing on $(0,1)$ and has exactly one inverse for each $y$.
 
-To find it, write $y = \ln\!\left(\frac{x}{1-x}\right)$, so $e^{y} = \frac{x}{1-x}$ and
+$y = \ln\!\left(\frac{x}{1-x}\right)$, so $e^{y} = \frac{x}{1-x}$ and
 \[
-x_1(y) = \frac{e^{y}}{1+e^{y}} = \frac{1}{1+e^{-y}}.
+x(y) = \frac{e^{y}}{1+e^{y}} = \frac{1}{1+e^{-y}}.
 \]
-As $x \to 0^+$, $y \to -\infty$, and as $x \to 1^-$, $y \to +\infty$, so $x_1(y) \in (0,1)$ for every $y \in \mathbb{R}$. Hence $p_X(x_1(y)) = 1$ for all $y$.
+As $x \to 0^+$, $y \to -\infty$, and as $x \to 1^-$, $y \to +\infty$, so $x_1(y) \in (0,1)$ for every $y \in \mathbb{R}$. Hence $p_X(x(y)) = 1$ for all $y$.
 
-By the Jacobian formula, $p_Y(y)$ is a sum over the single inverse ($k=1$ only),
+By the Jacobian formula, $p_Y(y)$ is:
 \[
-p_Y(y) = \sum_{k=1}^{1} \frac{p_X\!\left(x_k(y)\right)}{\left|\frac{dg}{dx}\right|_{x=x_k(y)}} = x_1(1-x_1).
+p_Y(y) = \frac{p_X\!\left(x(y)\right)}{|\frac{dg}{dx}|} = x(1-x).
 \]
 Using $x_1 = \frac{e^y}{1+e^y}$ and $1-x_1 = \frac{1}{1+e^y}$,
 \[
 p_Y(y) = \frac{e^{y}}{\left(1+e^{y}\right)^2}, \qquad y \in \mathbb{R}.
 \]
-The support of $y$ is therefore the whole real line, the image of $(0,1)$ under $g$. This is the logistic distribution. As a check, $\int_{-\infty}^{\infty} p_Y(y)\,dy = \left[\frac{e^y}{1+e^y}\right]_{-\infty}^{\infty} = 1 - 0 = 1$, so $p_Y$ is correctly normalised.
+The support of $y$ spans all real numbers which is the image of $(0,1)$ under $g$. Checking as before, $\int_{-\infty}^{\infty} p_Y(y)\,dy = \left[\frac{e^y}{1+e^y}\right]_{-\infty}^{\infty} = 1 - 0 = 1$, so $p_Y$ is a valid pdf.
 }
 
 \begin{lstlisting}
-# Your code for this part
+    # transform fresh LCG samples
+    X2 = np.array([generator.uniform() for _ in range(100000)])
+    Y3 = np.log(X2) - np.log(1 - X2)
+
+    y_grid = np.linspace(-10, 10, 1000)
+    p_Y = np.exp(y_grid) / (1 + np.exp(y_grid)) ** 2 #per derivation
+
+    # build the chart
+    fig, ax = plt.subplots()
+    ax.hist(Y3, bins=np.linspace(-10, 10, 80), density=True, label=r"Histogram of $y=\ln(x)-\ln(1-x)$ samples")
+    ax.plot(y_grid, p_Y, 'r', label=r"$p_Y(y)=\frac{e^y}{(1+e^y)^2}$")
+    ax.set_xlabel("y")
+    ax.set_ylabel("$p_Y(y)$")
+    ax.legend()
+    fig.savefig("figures/q2-log.pdf")     
+    plt.show()
 \end{lstlisting}
 
 \answerfig{q2-log}{Histogram of $y = \ln(x) - \ln(1-x)$ for transformed
 uniform samples, with the density from the Jacobian formula overlaid.}
 
-\answer{Your comments.}
+\answer{The histogram closely resembles the theoretical distribution, which is the logistic distribution (looks similar to normal, but with a sharper peak). There is one bucket that is slightly off (to the right of the peak) but that can easily be explained by the fact that the initial "uniform" distribution is not actually uniform.}
 
 % =====================================================================
 \section{Non-uniform random number generation}
@@ -315,7 +330,7 @@ uniform samples, with the density from the Jacobian formula overlaid.}
 \task{To generate random variables with CDF $F(y)$, we generate
 $x \sim \mathcal{U}(0,1)$ and set $y = F^{-1}(x)$. Why does this work?}
 
-\answer{Your explanation.}
+\answer{If $y=F^{-1}(x)$, then $y$ is a function of $x$, so we can use the Jacobian formula from the previous part to recover the pdf of Y as required. Then, when we sample the uniform X as usual, we can put those samples through the pdf of Y to obtain samples that follow its distribution.}
 
 \subsection*{CDF and inverse CDF of the exponential distribution}
 
