@@ -231,11 +231,11 @@ p_Y(y) = \sum_{k=1}^{2} \frac{p_X\!\left(x_k(y)\right)}{\left|\frac{dg}{dx}\righ
 \]
 since $|2x_k| = 2\sqrt{y}$ for both $k$.
 
-Now evaluate $p_X$ at each inverse. For $x_1 = \sqrt{y}$, $p_X(\sqrt{y}) = 1$ when $0 < \sqrt{y} < 1$, i.e.\ $0 < y < 1$, and $0$ otherwise. For $x_2 = -\sqrt{y}$, we have $-\sqrt{y} < 0$ for all $y > 0$, which lies outside the support of $x$, so $p_X(-\sqrt{y}) = 0$. Only the $k=1$ term contributes, giving
+Now evaluate $p_X$ at each inverse. For $x_1 = \sqrt{y}$, $p_X(\sqrt{y}) = 1$ when $0 < y < 1$, and $0$ otherwise. For $x_2 = -\sqrt{y}$, we have $-\sqrt{y} < 0$ for all $y > 0$, which lies outside the support of $x$, so $p_X(-\sqrt{y}) = 0$. Only the $k=1$ term contributes, giving
 \[
 p_Y(y) = \begin{cases} \dfrac{1}{2\sqrt{y}} & 0 < y < 1 \\[1ex] 0 & \text{otherwise.} \end{cases}
 \]
-The support of $y$ is therefore $(0,1)$, the image of $(0,1)$ under $g$. As a check, $\int_0^1 \frac{1}{2\sqrt{y}}\,dy = \left[\sqrt{y}\right]_0^1 = 1$, so $p_Y$ is correctly normalised.
+As a check, $\int_0^1 \frac{1}{2\sqrt{y}}\,dy = \left[\sqrt{y}\right]_0^1 = 1$, so $p_Y$ is a valid pdf.
 }
 
 \begin{lstlisting}
