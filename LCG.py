@@ -63,5 +63,25 @@ if __name__ == "__main__":
     ax.set_ylabel("$p_Y(y)$")
     ax.set_ylim(0, 5)  # p_Y diverges at y=0
     ax.legend()
-    fig.savefig("figures/q2-square.pdf")
+    #fig.savefig("figures/q2-square.pdf")
+    #plt.show()
+
+
+    # Q2: y = g(x) = ln(x) - ln(1-x), with x ~ U(0,1)
+    # transform fresh LCG samples
+
+    X2 = np.array([generator.uniform() for _ in range(100000)])
+    Y3 = np.log(X2) - np.log(1 - X2)
+
+    y_grid = np.linspace(-10, 10, 1000)
+    p_Y = np.exp(y_grid) / (1 + np.exp(y_grid)) ** 2 #per derivation
+
+    # build the chart
+    fig, ax = plt.subplots()
+    ax.hist(Y3, bins=np.linspace(-10, 10, 80), density=True, label=r"Histogram of $y=\ln(x)-\ln(1-x)$ samples")
+    ax.plot(y_grid, p_Y, 'r', label=r"$p_Y(y)=\frac{e^y}{(1+e^y)^2}$")
+    ax.set_xlabel("y")
+    ax.set_ylabel("$p_Y(y)$")
+    ax.legend()
+    fig.savefig("figures/q2-log.pdf")     
     plt.show()

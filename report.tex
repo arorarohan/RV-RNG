@@ -269,7 +269,33 @@ with the density from the Jacobian formula overlaid.}
 Jacobian formula, and again verify your result by histogramming transformed
 samples.}
 
-\answer{Your derivation of $p_Y(y)$.}
+\answer{
+The pdf of $x \sim \mathcal{U}(0,1)$ is
+\[
+p_X(x) = \begin{cases} 1 & 0 < x < 1 \\ 0 & \text{otherwise,} \end{cases}
+\]
+so the support of $x$ is $(0,1)$. Differentiating $g(x) = \ln(x) - \ln(1-x)$ gives
+\[
+\frac{dg}{dx} = \frac{1}{x} + \frac{1}{1-x} = \frac{1}{x(1-x)}, \qquad \left|\frac{dg}{dx}\right| = \frac{1}{x(1-x)},
+\]
+which is positive and finite everywhere on the support of $x$. Hence $g$ is strictly increasing on $(0,1)$ and has exactly one inverse for each $y$.
+
+To find it, write $y = \ln\!\left(\frac{x}{1-x}\right)$, so $e^{y} = \frac{x}{1-x}$ and
+\[
+x_1(y) = \frac{e^{y}}{1+e^{y}} = \frac{1}{1+e^{-y}}.
+\]
+As $x \to 0^+$, $y \to -\infty$, and as $x \to 1^-$, $y \to +\infty$, so $x_1(y) \in (0,1)$ for every $y \in \mathbb{R}$. Hence $p_X(x_1(y)) = 1$ for all $y$.
+
+By the Jacobian formula, $p_Y(y)$ is a sum over the single inverse ($k=1$ only),
+\[
+p_Y(y) = \sum_{k=1}^{1} \frac{p_X\!\left(x_k(y)\right)}{\left|\frac{dg}{dx}\right|_{x=x_k(y)}} = x_1(1-x_1).
+\]
+Using $x_1 = \frac{e^y}{1+e^y}$ and $1-x_1 = \frac{1}{1+e^y}$,
+\[
+p_Y(y) = \frac{e^{y}}{\left(1+e^{y}\right)^2}, \qquad y \in \mathbb{R}.
+\]
+The support of $y$ is therefore the whole real line, the image of $(0,1)$ under $g$. This is the logistic distribution. As a check, $\int_{-\infty}^{\infty} p_Y(y)\,dy = \left[\frac{e^y}{1+e^y}\right]_{-\infty}^{\infty} = 1 - 0 = 1$, so $p_Y$ is correctly normalised.
+}
 
 \begin{lstlisting}
 # Your code for this part
