@@ -85,3 +85,21 @@ if __name__ == "__main__":
     ax.legend()
     fig.savefig("figures/q2-log.pdf")     
     plt.show()
+
+
+    # Q3: exponential distribution via the inverse CDF, F^-1(x) = -ln(1-x)
+    # reuse the uniform LCG samples as probability levels
+    Y4 = -np.log(1 - X2)
+
+    y_grid = np.linspace(0, 8, 1000)
+    p_Y = np.exp(-y_grid) #exponential pdf with mean one
+
+    # build the chart
+    fig, ax = plt.subplots()
+    ax.hist(Y4, bins=np.linspace(0, 8, 60), density=True, label=r"Histogram of $y=-\ln(1-x)$ samples")
+    ax.plot(y_grid, p_Y, 'r', label=r"$p_Y(y)=e^{-y}$")
+    ax.set_xlabel("y")
+    ax.set_ylabel("$p_Y(y)$")
+    ax.legend()
+    fig.savefig("figures/q3-exponential.pdf")
+    plt.show()

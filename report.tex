@@ -330,14 +330,29 @@ uniform samples, with the density from the Jacobian formula overlaid.}
 \task{To generate random variables with CDF $F(y)$, we generate
 $x \sim \mathcal{U}(0,1)$ and set $y = F^{-1}(x)$. Why does this work?}
 
-\answer{If $y=F^{-1}(x)$, then $y$ is a function of $x$, so we can use the Jacobian formula from the previous part to recover the pdf of Y as required. Then, when we sample the uniform X as usual, we can put those samples through the pdf of Y to obtain samples that follow its distribution.}
+\answer{
+The method works because the transformation $y = F^{-1}(x)$ turns a uniform density into the density whose CDF is $F$. We can show this with the Jacobian formula from the previous part. Here $F$ is a CDF, so it is non-decreasing, and we assume it is strictly increasing on the support of $y$ so that $F^{-1}$ exists. The inverse of $y = F^{-1}(x)$ is then simply $x = F(y)$, and there is only one of them. Differentiating, $\frac{dx}{dy} = F'(y) = p_Y(y)$, since the pdf is the derivative of the CDF. Because the Jacobian formula is written in terms of $\frac{dy}{dx}$, we use $\left|\frac{dy}{dx}\right| = \left|\frac{dx}{dy}\right|^{-1} = \frac{1}{p_Y(y)}$. Since $x \sim \mathcal{U}(0,1)$ has $p_X(x) = 1$ for $0<x<1$, and $x = F(y) \in (0,1)$ over the support of $y$,
+\[
+p_{\text{new}}(y) = \frac{p_X\!\left(F(y)\right)}{\left|\frac{dy}{dx}\right|} = \frac{1}{1/p_Y(y)} = p_Y(y).
+\]
+So the transformed variable has exactly the density $p_Y(y)$ we wanted. Equivalently, in terms of CDFs, $P(F^{-1}(X) \le y) = P(X \le F(y)) = F(y)$, because $P(X \le u) = u$ for a uniform $X$ on $(0,1)$. The key point is that a uniform sample is used as a probability level: $x$ is chosen at random between 0 and 1 and we return the value of $y$ below which a fraction $x$ of the distribution's mass lies. Regions where $p_Y$ is large are covered by a wide range of $x$ values and are therefore sampled more often.
+}
 
 \subsection*{CDF and inverse CDF of the exponential distribution}
 
 \task{For the exponential distribution with mean one,
 $p_Y(y) = \exp(-y)$, $y \geq 0$, calculate the CDF and the inverse CDF.}
 
-\answer{Your derivation.}
+\answer{
+For $y \ge 0$, the CDF is
+\[
+F(y) = \int_0^{y} e^{-t}\,dt = \left[-e^{-t}\right]_0^{y} = 1 - e^{-y},
+\]
+and $F(y) = 0$ for $y < 0$. $F$ is strictly increasing on $y \ge 0$, taking values in $[0,1)$. To find the inverse, set $x = 1 - e^{-y}$, so $e^{-y} = 1 - x$ and
+\[
+F^{-1}(x) = -\ln(1-x), \qquad 0 \le x < 1.
+\]
+}
 
 \subsection*{Sampling from the exponential distribution}
 
